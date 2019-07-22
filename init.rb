@@ -7,7 +7,12 @@ if Rails.env == 'development'
 end
 
 # Tentative de faire fonctionner le plugin sous Rails 3
-ActiveSupport::Reloader.to_prepare do
+if Rails::VERSION::MAJOR >= 5 and Rails::VERSION::MINOR >= 1
+  reloader = ActiveSupport::Reloader
+else
+  reloader = ActionDispatch::Callbacks
+end
+reloader.to_prepare do
     # use require_dependency if you plan to utilize development mode
     require 'boards_watchers_patches'
 end
